@@ -19,10 +19,9 @@ const NavigationBar = () => {
   }, []);
 
   const publicRoutes = [
-    { name: "About", href: "/about" },
-    { name: "Browse", href: "/browse" },
-    { name: "Become Hub", href: "/becomehub" },
+    { name: "About", href: "/" },
     { name: "Sign In", href: "/signin" },
+    { name: "Get Started", href: "/signup" },
   ];
 
   const protectedRoutes = [

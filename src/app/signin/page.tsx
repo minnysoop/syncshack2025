@@ -5,8 +5,11 @@ import { useForm, SubmitHandler } from "react-hook-form"
 
 import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase-config"
+import { useRouter } from "next/navigation";
 
 export default function SignIn() { 
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -19,6 +22,8 @@ export default function SignIn() {
             // Signed in 
             const user = userCredential.user;
             console.log(user)
+            router.push("/dashboard");
+            
         })
         .catch((error) => {
             const errorCode = error.code;
