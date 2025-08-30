@@ -1,12 +1,19 @@
+// app/layout.tsx
+import './globals.css';
+import NavigationBar from '../components/navbar';
+
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
       <body>
-        {children}
+        <NavigationBar />
+        <main>
+          {children}
+        </main>
       </body>
     </html>
   );
