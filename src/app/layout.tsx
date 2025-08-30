@@ -1,15 +1,22 @@
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+// app/layout.tsx
+import './globals.css';
+import NavigationBar from '../components/navbar';
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
     <html lang="en">
-      <body>
-        {children}
+      <body className="flex min-h-screen bg-white text-black">
+        {/* Sidebar */}
+        <NavigationBar />
+
+        {/* Page content */}
+        <main className="flex-1 p-8 ml-48">
+          {children}
+        </main>
       </body>
     </html>
   );
