@@ -30,7 +30,7 @@ const GoogleMapComponent = ({
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={{ lat: origin.latitude, lng: origin.longitude }}
-        zoom={15}
+        zoom={13}
         options={mapOptions} 
       >
         <Marker 

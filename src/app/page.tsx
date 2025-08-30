@@ -16,7 +16,9 @@ const Home = () => {
         </h1>
         <p className="text-gray-600 mt-2 italic">randomly</p>
       </header>
-        <SearchBar onSearch={(value: string) => setLocation(value)} />
+      <div className="flex flex-col justify-center items-center mb-5">
+      <SearchBar onSearch={(value: string) => setLocation(value)} />
+    </div>
         <Map location={location} />
       </div>
     </>

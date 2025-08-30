@@ -40,7 +40,7 @@ const Map: React.FC<Location> = (props) => {
       return newPoints;
     };
 
-    const randomPoints = generateRandomPoints(origin, 30, 0.35);
+    const randomPoints = generateRandomPoints(origin, 30, 0.2);
     setPoints(randomPoints);
   }, [origin]);
 

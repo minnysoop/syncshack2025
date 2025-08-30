@@ -33,19 +33,17 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
       variant="outlined"
       size="small"
       sx={{
-       width: "250px",
-        margin: "16px",
         "& .MuiOutlinedInput-root": {
-          padding: "8px 12px",
-          border: "2px solid #1976d2",
-          borderRadius: "8px",
-          "&:hover": {
-            borderColor: "#115293",
-          },
-          "&.Mui-focused": {
-            borderColor: "#0d47a1",
-          },
+        padding: "8px 12px",
+        border: "2px solid #1976d2",
+        borderRadius: "8px",
+        "&:hover": {
+          borderColor: "#115293",
         },
+        "&.Mui-focused": {
+          borderColor: "#0d47a1",
+        },
+      },
       }}
       slots={{
         input: Input,
