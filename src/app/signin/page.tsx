@@ -4,7 +4,7 @@ import { SignInField } from "@/types/signin-fields"
 import { useForm, SubmitHandler } from "react-hook-form"
 
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/providers/auth-provider"
+import { auth } from "@/config/firebase-config"
 
 export default function SignIn() { 
     const {

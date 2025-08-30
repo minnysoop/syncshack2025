@@ -4,7 +4,7 @@ import { SignUpField } from "@/types/signup-fields"
 import { useForm, SubmitHandler } from "react-hook-form"
 
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/providers/auth-provider"
+import { auth } from "@/config/firebase-config"
 
 export default function SignUp() {
     const {
