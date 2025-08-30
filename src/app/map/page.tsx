@@ -1,5 +1,5 @@
 import { GoogleMapProvider } from "@/providers/gmap-provider";
-import { GoogleMapComponent } from "@/components/gmap";
+import { GoogleMapComponent } from "@/app/components/gmap";
 
 export default function Home() {
   const origin = { latitude: 37.7749, longitude: -122.4194 };      // San Francisco
