@@ -44,3 +44,18 @@ export async function listUsers() {
   });
 }
 
+
+
+
+//role by their email
+export async function getUserRoleByEmail(email: string) {
+  const normalized = email.trim().toLowerCase();
+
+  const user = await prisma.user.findUnique({
+    where: { email: normalized },
+    select: { id: true, email: true, role: true },
+  });
+
+  if (!user) throw new Error('User not found');
+  return user; 
+}
