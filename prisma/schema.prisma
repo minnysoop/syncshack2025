@@ -1,0 +1,184 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/**
+ * Enums
+ */
+enum DeliveryStatus {
+  PENDING
+  DELIVERED
+}
+
+enum Role {
+  LESSOR // hub operator
+  RENTER // product owner / renter
+}
+
+/**
+ * Core entities
+ */
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  role      Role     @default(RENTER)
+  createdAt DateTime @default(now())
+
+  hubs     Hub[]
+  products Product[]
+}
+
+model Hub {
+  id   String @id @default(cuid())
+  name String
+  lat  Float  @db.DoublePrecision
+  lng  Float  @db.DoublePrecision
+
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  inventories      Inventory[]
+  vehicles         Vehicle[]
+  deliveriesOrigin Delivery[]  @relation("OriginHubDeliveries")
+  routes           Route[] // multi-stop trips departing this hub
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lat, lng])
+}
+
+model Product {
+  id   String @id @default(cuid())
+  name String
+
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  // one product -> one hub at a time
+  inventory Inventory?
+
+  // one product -> one delivery ever
+  delivery Delivery?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+model Vehicle {
+  id               String @id @default(cuid())
+  hubId            String
+  emissionCo2PerKm Float  @db.DoublePrecision
+
+  hub    Hub     @relation(fields: [hubId], references: [id], onDelete: Cascade)
+  routes Route[] // vehicle runs many routes over time
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hubId])
+}
+
+/**
+ * Operations
+ */
+model Delivery {
+  id String @id @default(cuid())
+
+  // enforce one delivery per product
+  productId String  @unique
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  // must originate from a hub
+  originHubId String
+  originHub   Hub    @relation("OriginHubDeliveries", fields: [originHubId], references: [id], onDelete: Cascade)
+
+  // destination
+  destLat Float @db.DoublePrecision
+  destLng Float @db.DoublePrecision
+
+  estimatedArrivalTime DateTime?
+  actualArrivalTime    DateTime?
+  status               DeliveryStatus @default(PENDING)
+
+  // hard-enforce: product must be present at origin hub
+  inventory Inventory? @relation(fields: [originHubId, productId], references: [hubId, productId], onDelete: Restrict)
+
+  // backref to the stop (a delivery can be on at most one route)
+  routeStop RouteStop? @relation("DeliveryStop")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([originHubId])
+  @@index([originHubId, productId])
+}
+
+/**
+ * Hub × Product placement
+ */
+model Inventory {
+  id        String @id @default(cuid())
+  hubId     String
+  productId String @unique // one product -> one inventory row (one hub)
+
+  hub     Hub     @relation(fields: [hubId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+  Delivery  Delivery[]
+
+  @@unique([hubId, productId]) // lets Delivery reference the exact placement
+  @@index([productId])
+  @@index([hubId])
+}
+
+/**
+ * Routing (multi-stop trips)
+ */
+model Route {
+  id          String    @id @default(cuid())
+  hubId       String
+  vehicleId   String
+  plannedAt   DateTime?
+  startedAt   DateTime?
+  completedAt DateTime?
+
+  hub     Hub         @relation(fields: [hubId], references: [id], onDelete: Cascade)
+  vehicle Vehicle     @relation(fields: [vehicleId], references: [id], onDelete: Restrict)
+  stops   RouteStop[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([hubId, plannedAt])
+  @@index([vehicleId])
+}
+
+model RouteStop {
+  id         String    @id @default(cuid())
+  routeId    String
+  deliveryId String    @unique // one delivery appears on at most one route
+  sequence   Int // visit order (1,2,3,...)
+  plannedEta DateTime?
+  arrivedAt  DateTime?
+
+  route    Route    @relation(fields: [routeId], references: [id], onDelete: Cascade)
+  delivery Delivery @relation("DeliveryStop", fields: [deliveryId], references: [id], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([routeId, sequence]) // ensure no duplicate order numbers within a route
+  @@index([routeId, sequence])
+}
