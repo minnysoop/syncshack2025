@@ -1,6 +1,6 @@
 'use client'
 
-import Dashboard from "@/components/dashboard"
+import Map from "@/components/map"
 import { useState } from "react"
 import SearchBar from "@/components/searchBar"
 
@@ -11,9 +11,10 @@ const Home = () => {
 
   return (
     <>
-      <SearchBar onSearch={(value: string) => setLocation(value)} />
-        <p>Current location: {location}</p> 
-      <Dashboard location={location} />
+      <div className="h-screen overflow-hidden">
+        <SearchBar onSearch={(value: string) => setLocation(value)} />
+        <Map location={location} />
+      </div>
     </>
   );
 };
