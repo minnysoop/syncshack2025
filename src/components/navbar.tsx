@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { auth } from "@/config/firebase-config";
 import { useRouter } from "next/navigation";
@@ -14,23 +15,18 @@ const NavigationBar = () => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
     });
-
     return () => unsubscribe();
   }, []);
 
-  const publicRoutes = [
-    { name: "About", href: "/" },
-  ]
-
+  const publicRoutes = [{ name: "About", href: "/" }];
   const protectedRoutes = [
     { name: "Sign In", href: "/signin" },
     { name: "Get Started", href: "/signup" },
   ];
-
   const privateRoutes = [
     { name: "Dashboard", href: "/dashboard" },
-    { name: "Profile", href: "/profile" }
-  ]
+    { name: "Profile", href: "/profile" },
+  ];
 
   const handleSignOut = async () => {
     try {
@@ -42,65 +38,45 @@ const NavigationBar = () => {
   };
 
   return (
-    <nav className="flex border justify-evenly bg-opacity-0">
-      <span>LOGO</span>
+    <nav className="flex justify-evenly bg-opacity-0 items-center p-4">
+      {/* Replace LOGO with favicon or logo */}
+      <Link href="/">
+        <Image
+          src="/favicon.ico"   // or "/logo.png"
+          alt="Logo"
+          width={32}
+          height={32}
+          className="cursor-pointer"
+        />
+      </Link>
 
       <ul className="flex flex-row gap-6">
         {publicRoutes.map((item) => (
           <li key={item.href}>
-            <span></span>
-            <span>
-              <Link
-                href={item.href}
-              >
-                {item.name}
-              </Link>
-            </span>
+            <Link href={item.href}>{item.name}</Link>
           </li>
         ))}
 
-        
-        {!user && (protectedRoutes.map((item) => (
+        {!user &&
+          protectedRoutes.map((item) => (
             <li key={item.href}>
-              <span></span>
-              <span>
-                <Link
-                  href={item.href}
-                >
-                  {item.name}
-                </Link>
-              </span>
+              <Link href={item.href}>{item.name}</Link>
             </li>
-        )))}
+          ))}
 
-      {user && (privateRoutes.map((item) => (
+        {user &&
+          privateRoutes.map((item) => (
             <li key={item.href}>
-              <span></span>
-              <span>
-                <Link
-                  href={item.href}
-                >
-                  {item.name}
-                </Link>
-              </span>
+              <Link href={item.href}>{item.name}</Link>
             </li>
-        )))}
+          ))}
 
         {user && (
-          <>
-            <li>
-              <span>
-                <button
-                onClick={handleSignOut}
-              >
-                Sign Out
-              </button>
-              </span>
-            </li>
-          </>
+          <li>
+            <button onClick={handleSignOut}>Sign Out</button>
+          </li>
         )}
       </ul>
-
     </nav>
   );
 };
