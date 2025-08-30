@@ -1,4 +1,4 @@
-export default function SignUpLayout({
+export default function SignInLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
