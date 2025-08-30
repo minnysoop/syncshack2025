@@ -4,7 +4,7 @@ import { SignInField } from "@/types/signin-fields"
 import { useForm, SubmitHandler } from "react-hook-form"
 
 import { signInWithEmailAndPassword } from "firebase/auth";
-import { auth } from "@/providers/auth-provider"
+import { auth } from "@/config/firebase-config"
 
 export default function SignIn() { 
     const {
@@ -28,7 +28,10 @@ export default function SignIn() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-6 text-white border border-red-500 p-6">
+            <div>
+                Sign In
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-6 text-white border p-6">
                 <input
                     type="email"
                     {...register("email", { required: true })}
