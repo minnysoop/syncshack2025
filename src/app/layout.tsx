@@ -1,3 +1,6 @@
+import './globals.css';
+import NavigationBar from './components/navbar';
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -5,9 +8,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] min-h-screen">
+        <NavigationBar />
+        
         {children}
       </body>
     </html>
   );
 }
+
