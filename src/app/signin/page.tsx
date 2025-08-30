@@ -1,22 +1,22 @@
 "use client";
 
-import { SignUpField } from "@/types/signup-fields"
+import { SignInField } from "@/types/signin-fields"
 import { useForm, SubmitHandler } from "react-hook-form"
 
-import { createUserWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/providers/auth-provider"
 
-export default function SignUp() {
+export default function SignIn() { 
     const {
         register,
         handleSubmit,
-        watch
-    } = useForm<SignUpField>()
+    } = useForm<SignInField>()
 
-    const onSubmit: SubmitHandler<SignUpField> = (data) => {
-        const { name, email, password } = data
-        createUserWithEmailAndPassword(auth, email, password)
+    const onSubmit: SubmitHandler<SignInField> = (data) => {
+        const { email, password } = data
+        signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
+            // Signed in 
             const user = userCredential.user;
             console.log(user)
         })
@@ -26,16 +26,9 @@ export default function SignUp() {
         });
     }
 
-    const password = watch("password")
-
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900">
             <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-6 text-white border border-red-500 p-6">
-                <input
-                    {...register("name", { required: true })}
-                    placeholder="Name"
-                    className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
-                />
                 <input
                     type="email"
                     {...register("email", { required: true })}
@@ -48,19 +41,12 @@ export default function SignUp() {
                     placeholder="Password"
                     className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
                 />
-                <input
-                    type="password"
-                    {...register("confirmPassword", {
-                        required: true,
-                        validate: (value) => value === password || "Passwords do not match",
-                    })}
-                    placeholder="Confirm Password"
-                    className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
-                />
                 <button type="submit" className="w-full p-2 bg-blue-500 rounded">
                     Sign Up
                 </button>
             </form>
         </div>
     );
+
+
 }
