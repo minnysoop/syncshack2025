@@ -5,11 +5,10 @@ type Role = 'LESSOR' | 'RENTER';
 export async function createUser(params: {
   name: string;
   email: string;
-  role: Role;      // must match your Prisma enum
+  role: Role;      // must match our Prisma enum
 }) {
   const { name, email, role } = params;
 
-  // (Optional) Normalize email
   const normalizedEmail = email.trim().toLowerCase();
 
   try {
@@ -29,8 +28,7 @@ export async function createUser(params: {
     });
     return user;
   } catch (err: any) {
-    // Handle unique email violation nicely
-    // Prisma P2002 = Unique constraint failed
+
     if (err?.code === 'P2002' && err?.meta?.target?.includes('email')) {
       throw new Error('Email already exists');
     }
@@ -45,3 +43,4 @@ export async function listUsers() {
     select: { id: true, name: true, email: true, role: true, createdAt: true },
   });
 }
+
