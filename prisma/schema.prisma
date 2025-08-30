@@ -7,10 +7,83 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+/**
+ * Enums
+ */
+
+enum Role {
+  LESSOR // hub operator
+  RENTER // product owner / renter
+  ADMIN
+}
+
+/**
+ * User
+ */
 model User {
-  id        String   @id @default(cuid()) 
+  id        String   @id @default(cuid())
   name      String
   email     String   @unique
-  role      String   // will be an enum (LESSOR/RENTOR) lol
+  role      Role     @default(RENTER)
   createdAt DateTime @default(now())
+
+  hubs     Hub[]
+  products Product[]
+}
+
+/**
+ * Hub
+ */
+model Hub {
+  id   String @id @default(cuid())
+  name String
+  lat  Float  @db.DoublePrecision
+  lng  Float  @db.DoublePrecision
+
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  inventories Inventory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([lat, lng])
+}
+
+/**
+ * Product
+ */
+model Product {
+  id   String @id @default(cuid())
+  name String
+
+  ownerId String?
+  owner   User?   @relation(fields: [ownerId], references: [id], onDelete: SetNull)
+
+  inventories Inventory[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([name])
+}
+
+/**
+ * here we kinda explicityly joining the hub x product
+ */
+model Inventory {
+  id        String @id @default(cuid())
+  hubId     String
+  productId String
+
+  hub     Hub     @relation(fields: [hubId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([hubId, productId])
+  @@index([productId])
+  @@index([hubId])
 }
