@@ -1,11 +1,11 @@
 export default function Page() {
   return (
-    <div className="text-center p-[50px]">
-      <h1 className="text-4xl font-bold mb-4">
-        Welcome to Home as Shipping Hub
+    <div>
+      <h1>
+        About Page. Lorem ipsum dolor sit amet consectetur adipisicing elit. Sit, blanditiis.
       </h1>
-      <p className="text-lg">
-        Your home can now become a local shipping hub!
+      <p>
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Itaque exercitationem dolores officia sint unde neque beatae quam veniam delectus facilis pariatur placeat veritatis cum quis impedit accusamus deserunt fuga, velit voluptates eaque recusandae magni debitis? Architecto placeat repudiandae animi mollitia cumque sint, ipsam alias tenetur nam iste quidem quaerat pariatur ratione minima libero numquam? Odit similique soluta consequatur illum quibusdam ea, dolor vitae eveniet labore! Numquam modi praesentium temporibus nihil nobis dignissimos possimus! Dolore quae distinctio culpa mollitia repellendus delectus suscipit perferendis, ullam quos quia fugiat dicta officiis molestiae nisi totam qui fugit nemo omnis porro quam cupiditate ut in.
       </p>
     </div>
   );
