@@ -19,7 +19,6 @@ export default function SignIn() {
         const { email, password } = data
         signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            // Signed in 
             const user = userCredential.user;
             console.log(user)
             router.push("/dashboard");

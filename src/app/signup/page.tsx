@@ -18,12 +18,12 @@ export default function SignUp() {
     } = useForm<SignUpField>()
 
     const onSubmit: SubmitHandler<SignUpField> = (data) => {
-        const { name, email, password } = data
+        const { name, role, email, password } = data
         createUserWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
             const user = userCredential.user;
-            console.log(user)
             router.push("/dashboard");
+            // Update role, name, email, in the database and name API ROUTE
         })
         .catch((error) => {
             const errorCode = error.code;
@@ -42,6 +42,11 @@ export default function SignUp() {
                 <input
                     {...register("name", { required: true })}
                     placeholder="Name"
+                    className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
+                />
+                <input
+                    {...register("role", { required: true })}
+                    placeholder="Role"
                     className="w-full p-2 bg-gray-800 border border-gray-700 rounded"
                 />
                 <input
