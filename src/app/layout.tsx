@@ -1,5 +1,5 @@
 import './globals.css';
-import NavigationBar from '../components/navbar';
+import NavigationBar from '../components/nav';
 
 export default function RootLayout({
   children,
@@ -8,9 +8,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="bg-gradient-to-t from-[#fbc2eb] to-[#a6c1ee] min-h-screen">
+      <body style={{ margin: 0, padding: 0}}>
         <NavigationBar />
-        
         {children}
       </body>
     </html>
