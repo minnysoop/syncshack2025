@@ -1,16 +1,18 @@
 'use client'
 
-import { GoogleMap } from "@react-google-maps/api";
+import { GoogleMap, Marker } from "@react-google-maps/api";
 import { Coordinates } from "@/types/coordinates";
 
 interface GoogleMapComponentProps {
   origin: Coordinates;
+  points: Coordinates[];
   width: string;
   height: string;
 }
 
 const GoogleMapComponent = ({
   origin,
+  points,
   width,
   height,
 }: GoogleMapComponentProps) => {
@@ -28,9 +30,22 @@ const GoogleMapComponent = ({
       <GoogleMap
         mapContainerStyle={{ width: "100%", height: "100%" }}
         center={{ lat: origin.latitude, lng: origin.longitude }}
-        zoom={13}
+        zoom={15}
         options={mapOptions} 
       >
+        <Marker 
+          position={{ lat: origin.latitude, lng: origin.longitude }} 
+          label="Origin"
+        />
+
+        {points.map((point, index) => (
+          <Marker
+            key={index}
+            position={{ lat: point.latitude, lng: point.longitude }}
+            label={`${index + 1}`} 
+          />
+        ))}
+
       </GoogleMap>
     </div>
   );

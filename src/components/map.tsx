@@ -7,9 +7,11 @@ import { GoogleMapComponent } from "@/components/gmap";
 import { Coordinates } from "@/types/coordinates";
 
 const DEFAULT_COORDS: Coordinates = { latitude: 37.7749, longitude: -122.4194 };
+const DEFAULT_REST_STOPS: Coordinates[] = []
 
 const Map: React.FC<Location> = (props) => {
   const [origin, setOrigin] = useState<Coordinates>(DEFAULT_COORDS);
+  const [points, setPoints] = useState<Coordinates[]>(DEFAULT_REST_STOPS)
 
   const location = props.location; 
   useEffect(() => {
@@ -27,10 +29,26 @@ const Map: React.FC<Location> = (props) => {
     });
   }, [location]);
 
+  useEffect(() => {
+    const generateRandomPoints = (center: Coordinates, count = 5, radius = 0.05) => {
+      const newPoints: Coordinates[] = [];
+      for (let i = 0; i < count; i++) {
+        const randomLat = center.latitude + (Math.random() - 0.5) * radius * 2;
+        const randomLng = center.longitude + (Math.random() - 0.5) * radius * 2;
+        newPoints.push({ latitude: randomLat, longitude: randomLng });
+      }
+      return newPoints;
+    };
+
+    const randomPoints = generateRandomPoints(origin, 30, 0.35);
+    setPoints(randomPoints);
+  }, [origin]);
+
   return (
     <GoogleMapProvider>
         <GoogleMapComponent
           origin={origin}
+          points={points}
           width="100%"
           height="800px"
         />
