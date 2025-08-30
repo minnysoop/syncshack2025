@@ -10,7 +10,7 @@ export default function Home() {
       <GoogleMapComponent
         origin={origin}
         destination={destination}
-        width="100%"
+        width="80%"
         height="500px"
       />
     </GoogleMapProvider>

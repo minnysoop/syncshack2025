@@ -30,7 +30,10 @@ export default function SignUp() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-gray-900">
-            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-6 text-white border border-red-500 p-6">
+            <div>
+                Sign Up
+            </div>
+            <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm space-y-6 text-white border p-6">
                 <input
                     {...register("name", { required: true })}
                     placeholder="Name"
