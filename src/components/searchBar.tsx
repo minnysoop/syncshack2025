@@ -1,11 +1,24 @@
 'use client'
 
 import React, { useState } from "react";
-import { TextField, InputAdornment } from "@mui/material";
+import { TextField, Input, InputAdornment } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-const SearchBar: React.FC = () => {
+interface SearchBarProps {
+  onSearch?: (value: string) => void;
+}
+
+const SearchBar: React.FC<SearchBarProps> = ({ onSearch }) => {
   const [query, setQuery] = useState<string>("");
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") {
+      if (onSearch && query != "") {
+        onSearch(query);
+      }
+      setQuery("")
+    }
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setQuery(e.target.value);
@@ -15,17 +28,22 @@ const SearchBar: React.FC = () => {
     <TextField
       value={query}
       onChange={handleChange}
+      onKeyDown={handleKeyPress}
       placeholder="Search..."
       variant="outlined"
       size="small"
       fullWidth
-      // Use `InputProps` correctly
-      InputProps={{
-        startAdornment: (
-          <InputAdornment position="start">
-            <SearchIcon />
-          </InputAdornment>
-        ),
+      slots={{
+        input: Input,
+      }}
+      slotProps={{
+        input: {
+          startAdornment: (
+            <InputAdornment position="start">
+              <SearchIcon />
+            </InputAdornment>
+          ),
+        },
       }}
     />
   );

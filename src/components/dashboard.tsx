@@ -30,7 +30,11 @@ ChartJS.register(
   Legend
 );
 
-const Dashboard = () => {
+interface DashboardProp {
+    location: string
+}
+
+const Dashboard: React.FC<DashboardProp>  = (location) => {
   const layout = [
     { i: "pane1", x: 0, y: 0, w: 4, h: 3 },
     { i: "pane2", x: 4, y: 0, w: 4, h: 3 },
