@@ -6,7 +6,11 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "@/config/firebase-config"
 
+import { useRouter } from "next/navigation";
+
 export default function SignUp() {
+    const router = useRouter();
+
     const {
         register,
         handleSubmit,
@@ -19,6 +23,7 @@ export default function SignUp() {
         .then((userCredential) => {
             const user = userCredential.user;
             console.log(user)
+            router.push("/dashboard");
         })
         .catch((error) => {
             const errorCode = error.code;
