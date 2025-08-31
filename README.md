@@ -11,4 +11,6 @@ Our task was to create a Random Rest Stop Finder using the Google Maps API withi
 We were able to create the application, however, we failed to deploy it in time. 
 
 ### Result
-This was actually an interesting experience. It really goes to show that sometimes building on simple ideas is much better than trying to start of with a large one. It also emphasized the importance of collaboration and communicating your ideas properly. 
+This was actually an interesting experience. It really goes to show that sometimes building on simple ideas is much better than trying to start of with a large one. It also emphasized the importance of collaboration and communicating your ideas properly. Anywho, here is what it looks like.
+
+<img width="1448" height="765" alt="Screenshot 2025-08-31 at 1 54 42 PM" src="https://github.com/user-attachments/assets/0e5fb158-818c-4f33-8542-b9adecc03d0a" />
